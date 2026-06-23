@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  officialsite:
+    build: .
+    container_name: jski-official
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    networks:
+      - jski-network
+
+networks:
+  jski-network:
+    driver: bridge

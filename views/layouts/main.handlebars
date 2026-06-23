@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta name="author" content="Bingyang Xu, 徐秉阳, hi@xubingyang.com">
+  <meta name="description" content="{{#if pageDesc}}{{pageDesc}}{{else}}JSKI, JSKI中文国际滑雪学校{{/if}}">
+  <meta name="keywords" content="JSKI, 日本滑雪, 中文滑雪学校,中文滑雪教练">
+  <meta name="copyright" content="xubingyang.com">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  {{#if noindex}}
+  <meta name="robots" content="noindex">
+  {{/if}}
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="{{#if pageTitle}}{{pageTitle}}{{else}}JSKI | 日本滑雪学校{{/if}}">
+  <meta property="og:description" content="{{#if pageDesc}}{{pageDesc}}{{else}}JSKI, JSKI中文国际滑雪学校{{/if}}">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="{{siteUrl}}{{#if canonicalPath}}{{canonicalPath}}{{else}}/{{/if}}">
+  <meta property="og:image" content="{{siteUrl}}/img/landing/image-1.jpg">
+  <meta property="og:site_name" content="JSKI">
+  <meta property="og:locale" content="zh_CN">
+
+  <!-- Canonical -->
+  <link rel="canonical" href="{{siteUrl}}{{#if canonicalPath}}{{canonicalPath}}{{else}}/{{/if}}">
+
+  <!-- 加载 favicon 相关内容 -->
+  <link rel="apple-touch-icon" sizes="180x180" href="img/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="img/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="img/favicon/favicon-16x16.png">
+  <link rel="manifest" href="img/favicon/site.webmanifest">
+  <link rel="mask-icon" href="img/favicon/safari-pinned-tab.svg" color="#5bbad5">
+  <meta name="msapplication-TileColor" content="#ffc40d">
+  <meta name="theme-color" content="#ffffff">
+  <!-- 完成加载 favicon相关内容 -->
+
+  <!-- 加载外部 CSS -->
+  <meta name="theme-color" content="#ffffff">
+  <link rel="stylesheet" href="css/animate.css" />
+  <link rel="stylesheet" href="css/bootstrap.min.css" />
+  <link rel="stylesheet" href="css/flaticon.css" />
+  <link rel="stylesheet" href="css/fontawesome.min.css" />
+  <link rel="stylesheet" href="css/magnific-popup.css" />
+  <link rel="stylesheet" href="css/metisMenu.css" />
+  <link rel="stylesheet" href="css/odometer.css" />
+  <link rel="stylesheet" href="css/spacing.css" />
+  <link rel="stylesheet" href="css/swiper.min.css" />
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/fullcalendar.css">
+  <link rel="stylesheet" href="css/chatbot.css">
+  {{!--
+  <link rel="stylesheet" href="css/bootstrap-datetimepicker.min.css"> --}}
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/css/tempusdominus-bootstrap-4.min.css" />
+  <!-- 完成加载外部 CSS -->
+  <script type='text/javascript'
+    src='https://www.bing.com/api/maps/mapcontrol?callback=GetMap&key=AufhJZ8_yoPJckHU0v7rRPQtQoJ9uUL8j2jfw4MpW3a_eF7fhcaqZHzglP25iZ5v'
+    async defer></script>
+  <title>{{#if pageTitle}}{{pageTitle}}{{else}}JSKI | 日本滑雪学校{{/if}}</title>
+</head>
+
+<body>
+  <noscript>您需要启用JavaScript才能运行此应用</noscript>
+  <!-- preloader -->
+  <div id="preloader">
+    <div class="preloader"><img src="img/logo/preloader.gif" alt="preloader">
+      <h4>加载中...</h4>
+    </div>
+  </div>
+  <!-- preloader end -->
+  {{> _header}}
+  {{{body}}}
+  {{> _brand}}
+  {{> _footer}}
+
+  <!-- 加载外部 JavaScript -->
+  <!-- jQuery -> Popper.js -> Bootstrap JS -->
+  <script src="js/jquery-3.2.1.min.js"></script>
+  <script src="js/popper.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/metisMenu.min.js"></script>
+  <script src="js/swiper.min.js"></script>
+  <script src="js/jquery.magnific-popup.min.js"></script>
+  <script src="js/jquery.appear.js"></script>
+  <script src="js/jquery.knob.min.js"></script>
+  <script src="js/odometer.min.js"></script>
+  <script src="js/imagesloaded.pkgd.min.js"></script>
+  <script src="js/isotope.pkgd.min.js"></script>
+  <script src="js/tilt.jquery.min.js"></script>
+  <script src="js/wow.min.js"></script>
+  <script src="js/fullcalendar.js"></script>
+  <script src="js/fullcalendar-locales-all.min.js"></script>
+  <script src="js/moments.min.js"></script>
+  <script type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/js/tempusdominus-bootstrap-4.min.js"></script>
+  <script src="js/locale.js"></script>
+  {{!--
+  <script src="js/datetimepicker.min.js"></script> --}}
+  <script src="js/script.js"></script>
+  <script src="js/bundle.js"></script>
+  <script src="js/locationMap.js"></script>
+  <script src="js/chatbot.js"></script>
+
+  <!-- 完成加载外部 JavaScript -->
+</body>
+
+</html>

@@ -1,0 +1,31 @@
+# Dependencies files
+node_modules/
+
+# Config files
+config/config.env
+config/config-deploy.env
+
+# Test data
+dev-data/
+
+# Build files
+client/build/
+public/js/bundle.js
+public/js/bundle.js.map
+
+# Lock files
+yarn.lock
+
+# Local files
+JSKI_Site_New_Quotation.xlsx
+
+# System cache
+.cache
+
+#Notes
+*.notes
+.vercel
+
+# Environment variables
+.env
+.env.local
