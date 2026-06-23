@@ -1,5 +1,5 @@
 # Makefile for JSKI Official Site
-# 可在本地 Mac 和服务器上共用
+# 本地开发 + 服务器端 GitHub pull 部署
 
 # 服务器配置（与其他项目一致）
 SERVER_IP   ?= 47.74.45.109
@@ -8,10 +8,6 @@ SSH_PORT    ?= 2222
 DEPLOY_PATH ?= /opt/jski-official
 SERVICE_NAME ?= officialsite
 DOMAIN      ?= jcosa.net
-
-RSYNC = rsync -avz -e 'ssh -p $(SSH_PORT)' --delete \
-  --exclude='.git' --exclude='node_modules' --exclude='.env' \
-  --exclude='.DS_Store' --exclude='*.log'
 
 # ===== 本地开发 =====
 .PHONY: install dev build up down logs
@@ -34,18 +30,16 @@ down:
 logs:
 	docker compose logs -f
 
-# ===== 部署：本地 → 服务器 =====
-.PHONY: sync deploy
+# ===== 部署：GitHub → 服务器 =====
+# 流程：本地 git push → 服务器 make prod-restart
+.PHONY: deploy
 
-sync:
-	$(RSYNC) . $(SERVER_USER)@$(SERVER_IP):$(DEPLOY_PATH)/
-
-deploy: sync
-	@echo "代码已同步到 $(SERVER_IP):$(DEPLOY_PATH)"
-	@echo "在服务器上执行以下命令完成部署："
+deploy:
+	@echo "请先在本地执行：git push"
+	@echo "然后在服务器上执行："
 	@echo ""
 	@echo "  ssh -p $(SSH_PORT) $(SERVER_USER)@$(SERVER_IP)"
-	@echo "  cd $(DEPLOY_PATH) && docker compose up -d --build"
+	@echo "  cd $(DEPLOY_PATH) && make prod-restart"
 	@echo ""
 
 # ===== 服务器端操作（在 /opt/jski-official 下执行）=====
@@ -64,7 +58,7 @@ prod-logs:
 	docker compose logs -f $(SERVICE_NAME)
 
 prod-restart:
-	docker compose down && docker compose up -d --build
+	git pull origin main && docker compose down && docker compose up -d --build
 
 prod-health:
 	@curl -s http://127.0.0.1:8080/health | jq . 2>/dev/null || curl -s http://127.0.0.1:8080/health
