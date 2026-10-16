@@ -1,0 +1,53 @@
+<main>
+	<section class="breadcrumb-area bg-fix" data-overlay="black" data-opacity="7"
+		data-background="img/bg/breadcrumb-bg-4.jpg">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-lg-8 text-center">
+					<div class="breadcrumb-content mb-50 mt-50 mb-md-40 mt-md-40 mb-xs-30 mt-xs-30">
+						<h3 class="title">在线支付</h3>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<div class="contact-area pt-30 pb-30 pt-xs-30 pb-xs-30">
+		<div class="container pt-30 pb-30">
+			<div class="section-title-2 bar-theme-color contact-title">
+				<h2>课程费用在线支付</h2>
+				<span>支持 PayPay / 信用卡 / 便利店支付</span>
+			</div>
+			<div class="row pt-30 justify-content-center">
+				{{#each products}}
+				<div class="col-md-5 col-lg-4 mb-30">
+					<div class="contact-info justify-content-start h-100">
+						<h4>{{name}}</h4>
+						<p style="min-height: 3em;">{{description}}</p>
+						<h3 class="mb-20">{{priceFormatted}}</h3>
+						<form method="POST" action="/payment/create" class="js-payment-form">
+							<input type="hidden" name="productId" value="{{id}}">
+							<input type="hidden" name="nonce" value="{{nonce}}">
+							<button type="submit" class="btn btn-success w-100">立即支付</button>
+						</form>
+					</div>
+				</div>
+				{{/each}}
+			</div>
+			<div class="row pt-10">
+				<div class="col-md-12 col-lg-12">
+					<div class="contact-info">
+						<p>支付完成后页面会自动显示结果；如未自动跳转，请保存好支付页面链接。如需帮助，请通过微信 / LINE / WhatsApp 联系客服。</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>
+		// 防止双击产生重复提交（服务端 nonce 幂等为最终保障）
+		document.querySelectorAll('.js-payment-form').forEach(function (form) {
+			form.addEventListener('submit', function () {
+				form.querySelector('button[type="submit"]').disabled = true;
+			});
+		});
+	</script>
+</main>

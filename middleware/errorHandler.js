@@ -71,8 +71,6 @@ const errorHandler = (err, req, res, next) => {
   } else if (process.env.NODE_ENV === 'production') {
     sendErrorProd(err, res);
   }
-
-  next();
 };
 
 module.exports = errorHandler;

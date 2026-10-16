@@ -9,9 +9,14 @@ services:
       - "8080:8080"
     env_file:
       - .env
+    volumes:
+      - payment-data:/app/data   # SQLite 订单数据持久化（不挂则容器重建丢数据）
     networks:
       - jski-network
 
 networks:
   jski-network:
     driver: bridge
+
+volumes:
+  payment-data:

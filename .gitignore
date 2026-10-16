@@ -4,9 +4,11 @@ node_modules/
 # Config files
 config/config.env
 config/config-deploy.env
+config/keys/
 
 # Test data
 dev-data/
+data/
 
 # Build files
 client/build/

@@ -3,5 +3,7 @@ node_modules
 .DS_Store
 config/config.env
 .env
+data/
+config/keys/
 *.md
 npm-debug.log*

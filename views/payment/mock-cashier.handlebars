@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="robots" content="noindex">
+	<title>模拟收银台（mock）</title>
+	<style>
+		body { font-family: -apple-system, "PingFang SC", sans-serif; background: #f3f1f7; margin: 0;
+			display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+		.box { background: #fff; border-radius: 10px; padding: 32px 40px; max-width: 420px; width: 90%;
+			box-shadow: 0 5px 20px rgba(28,51,70,.12); }
+		h2 { margin-top: 0; color: #5f528f; }
+		.amount { font-size: 28px; font-weight: 700; margin: 16px 0; }
+		.muted { color: #888; font-size: 13px; }
+		button { width: 100%; padding: 12px; margin-top: 12px; border: 0; border-radius: 6px;
+			font-size: 15px; cursor: pointer; }
+		.btn-success { background: #28a745; color: #fff; }
+		.btn-fail { background: #dc3545; color: #fff; }
+		.badge { display: inline-block; background: #FFA600; color: #fff; font-size: 12px;
+			padding: 2px 8px; border-radius: 4px; }
+	</style>
+</head>
+<body>
+	<div class="box">
+		<span class="badge">MOCK 模拟收银台</span>
+		<h2>StarPay-Cashier（模拟）</h2>
+		<p>商品：{{productName}}</p>
+		<p class="amount">{{amountFormatted}}</p>
+		<p class="muted">商户订单号：{{merchantOrderNo}}</p>
+		<button class="btn-success" id="btn-success">模拟支付成功</button>
+		<button class="btn-fail" id="btn-fail">模拟支付失败</button>
+		<p class="muted">点击后将向 /payment/notify 发送与真实 NSS 同构的签名通知。</p>
+	</div>
+	<script>
+		function complete(outcome) {
+			fetch('/mock-cashier/complete', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ token: '{{token}}', outcome: outcome })
+			}).then(function (r) { return r.json(); }).then(function () {
+				window.location.href = '/payment/result?token={{token}}';
+			}).catch(function () { alert('模拟回调失败，请重试'); });
+		}
+		document.getElementById('btn-success').addEventListener('click', function () { complete('success'); });
+		document.getElementById('btn-fail').addEventListener('click', function () { complete('fail'); });
+	</script>
+</body>
+</html>

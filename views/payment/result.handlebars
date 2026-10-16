@@ -1,0 +1,48 @@
+<main>
+	<section class="breadcrumb-area bg-fix" data-overlay="black" data-opacity="7"
+		data-background="img/bg/breadcrumb-bg-4.jpg">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-lg-8 text-center">
+					<div class="breadcrumb-content mb-50 mt-50 mb-md-40 mt-md-40 mb-xs-30 mt-xs-30">
+						<h3 class="title">支付结果</h3>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<div class="contact-area pt-30 pb-30 pt-xs-30 pb-xs-30">
+		<div class="container pt-30 pb-30">
+			<div class="row justify-content-center">
+				<div class="col-md-8 col-lg-6">
+					<div class="contact-info text-center">
+
+						{{!-- 固定错误态（渲染时已知） --}}
+						{{#if (eq state "error")}}
+							<h4 class="mb-20">支付未完成</h4>
+							<p>{{message}}</p>
+							<a href="/products" class="btn btn-success mt-20">返回商品页</a>
+						{{else}}
+							<h4 class="mb-20">订单：{{productName}}</h4>
+							<h3 class="mb-20">{{amountFormatted}}</h3>
+
+							{{!-- 轮询区域（初始为确认中） --}}
+							<div id="pay-result" data-token="{{token}}">
+								<p class="js-pending"><i class="fas fa-spinner fa-spin"></i> 正在确认支付结果，请稍候…</p>
+								<div class="js-done" style="display:none;">
+									<h4 class="js-title mb-20"></h4>
+									<p class="js-message"></p>
+									<a href="/products" class="btn btn-success mt-20">返回商品页</a>
+								</div>
+							</div>
+						{{/if}}
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	{{#if (eq state "pending")}}
+	<script src="js/payment.js"></script>
+	{{/if}}
+</main>

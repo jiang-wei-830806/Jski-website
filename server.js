@@ -13,6 +13,7 @@ const errorHandler = require('./middleware/errorHandler');
 
 // 加载route文件
 const index = require('./routes/index');
+const payment = require('./routes/payment');
 
 // 启用Express
 const app = express();
@@ -55,15 +56,25 @@ app.use(helmet({
 }));
 
 // 启用Rate Limiter
+// 注意：NSS 异步通知（/payment/notify）来自 NSS 服务器且会重试，必须豁免全局限流，否则可能被误杀
 const limiter = rateLimit({
   windowMs: 60 * 60 * 1000,
   max: 100,
   standardHeaders: true,
   legacyHeaders: false,
+  skip: (req) => req.path === '/payment/notify',
   message: {
     error: '来自此IP的请求过多，请1小时后再尝试访问'
   }
 });
+app.use(limiter);
+
+// NSS 通知专用 body parser：放宽到 100kb，并用 verify 捕获原始字节供验签。
+// 必须放在全局 10kb parser 之前；body-parser 有 _body 保护，不会重复解析。
+app.use('/payment/notify', express.json({
+  limit: '100kb',
+  verify: (req, res, buf) => { req.rawBody = buf.toString('utf8'); }
+}));
 
 // Body Parser中间件
 app.use(express.json({ limit: '10kb' }));
@@ -81,6 +92,7 @@ app.get('/health', (req, res) => {
 
 // 启用 view routes
 app.use('/', index);
+app.use('/', payment);
 
 // WebP 自动降级/升级中间件：浏览器支持 webp 时优先返回 .webp 版本
 const fs = require('fs');
@@ -109,7 +121,11 @@ app.use(express.static(path.join(__dirname, 'public'), {
 
 // 设定view engine
 app.engine('handlebars', exphbs({
-  defaultLayout: 'main'
+  defaultLayout: 'main',
+  helpers: {
+    // 简单的相等判断（结果页按 state 渲染不同区块）
+    eq: (a, b) => a === b
+  }
 }));
 app.set('view engine', 'handlebars');
 app.set('views', path.join(__dirname, 'views'));
