@@ -14,6 +14,14 @@ const products = [
     name: '单次体验课',
     description: '双板或单板体验课一次（2小时，含中文教学）。',
     priceJpy: 15000
+  },
+  // ⚠️ QA 联调专用：1 日元测试商品，仅用于 NetStars 测试环境验证真实支付闭环。
+  // 生产切换前必须删除本条目。
+  {
+    id: 'qa-test-1yen',
+    name: '【QA测试】支付联调验证',
+    description: 'NetStars QA 环境联调专用（1日元），非真实商品，不会发货。',
+    priceJpy: 1
   }
 ];
 
