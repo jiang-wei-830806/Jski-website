@@ -42,11 +42,14 @@ const server = app.listen(PORT, '0.0.0.0', () => {
   console.log(chalk.yellow.bold(`| 部署环境: ${process.env.NODE_ENV}`));
   console.log(chalk.yellow.bold(`| 部署端口: ${process.env.PORT}`));
   console.log(chalk.yellow.bold(`| 部署日期: ${date}`));
-  console.log(chalk.yellow.bold(`| 支付模式: ${process.env.NSS_MOCK === 'true' ? 'MOCK（模拟，禁止生产）' : 'StarPay 真实接口'}`));
+  const paymentEnabled = process.env.PAYMENT_ENABLED === 'true';
+  console.log(chalk.yellow.bold(`| 支付功能: ${paymentEnabled ? (process.env.NSS_MOCK === 'true' ? 'MOCK（模拟，禁止生产）' : 'StarPay 真实接口') : '未启用'}`));
   console.log('|---------------------------------------------------');
 
   // 支付对账兜底任务（超时订单主动查询 / 未支付订单清扫）
-  require('./jobs/reconciler').start();
+  if (paymentEnabled) {
+    require('./jobs/reconciler').start();
+  }
 });
 
 // 处理unhandled promise rejection

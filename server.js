@@ -13,7 +13,10 @@ const errorHandler = require('./middleware/errorHandler');
 
 // 加载route文件
 const index = require('./routes/index');
-const payment = require('./routes/payment');
+
+// StarPay 支付功能开关：未完成测试前默认关闭（不加载路由/配置，/payment/* 返回 404）
+// 启用方式：.env 设置 PAYMENT_ENABLED=true 并配齐 NSS_* 参数
+const paymentEnabled = process.env.PAYMENT_ENABLED === 'true';
 
 // 启用Express
 const app = express();
@@ -71,10 +74,12 @@ app.use(limiter);
 
 // NSS 通知专用 body parser：放宽到 100kb，并用 verify 捕获原始字节供验签。
 // 必须放在全局 10kb parser 之前；body-parser 有 _body 保护，不会重复解析。
-app.use('/payment/notify', express.json({
-  limit: '100kb',
-  verify: (req, res, buf) => { req.rawBody = buf.toString('utf8'); }
-}));
+if (paymentEnabled) {
+  app.use('/payment/notify', express.json({
+    limit: '100kb',
+    verify: (req, res, buf) => { req.rawBody = buf.toString('utf8'); }
+  }));
+}
 
 // Body Parser中间件
 app.use(express.json({ limit: '10kb' }));
@@ -92,7 +97,9 @@ app.get('/health', (req, res) => {
 
 // 启用 view routes
 app.use('/', index);
-app.use('/', payment);
+if (paymentEnabled) {
+  app.use('/', require('./routes/payment'));
+}
 
 // WebP 自动降级/升级中间件：浏览器支持 webp 时优先返回 .webp 版本
 const fs = require('fs');
