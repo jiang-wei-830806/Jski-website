@@ -21,6 +21,11 @@ const paymentEnabled = process.env.PAYMENT_ENABLED === 'true';
 // 启用Express
 const app = express();
 
+// 站点位于 nginx 反向代理之后（同一台机器一跳）：
+// 信任第一跳，使 req.ip 取 X-Forwarded-For 中的真实访客 IP，
+// 否则所有访客在限流器里共用 127.0.0.1 一个桶，全站很快集体 429。
+app.set('trust proxy', 1);
+
 // 全局模板变量
 app.locals.siteUrl = 'https://jcosa.net';
 
@@ -58,14 +63,15 @@ app.use(helmet({
   }
 }));
 
-// 启用Rate Limiter
+// 启用Rate Limiter（只限动态页面，静态资源带扩展名不计数——
+// 一次页面加载会拉取几十个 css/js/图片，计入会把正常浏览误判为超限）
 // 注意：NSS 异步通知（/payment/notify）来自 NSS 服务器且会重试，必须豁免全局限流，否则可能被误杀
 const limiter = rateLimit({
   windowMs: 60 * 60 * 1000,
   max: 100,
   standardHeaders: true,
   legacyHeaders: false,
-  skip: (req) => req.path === '/payment/notify',
+  skip: (req) => req.path === '/payment/notify' || /\.[a-z0-9]+$/i.test(req.path),
   message: {
     error: '来自此IP的请求过多，请1小时后再尝试访问'
   }
